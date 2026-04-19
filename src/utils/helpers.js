@@ -1,24 +1,20 @@
-export function getBlock(element) {
-  if (element.category === "lanthanide" || element.category === "actinide")
-    return "f";
-  if (element.group <= 2) return "s";
-  if (element.group >= 13) return "p";
-  return "d";
-}
+export const getPropertyRange = (elements, property) => {
+  const values = elements.map(e => e[property]).filter(v => v !== null && v !== undefined);
+  if (values.length === 0) return { min: 0, max: 1 };
+  return { min: Math.min(...values), max: Math.max(...values) };
+};
 
-export function titleCase(value) {
-  return value
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+export const getHeatmapColor = (value, min, max) => {
+  if (value === null || value === undefined) return 'rgba(255, 255, 255, 0.1)';
+  // simple lerp from blue to red based on percentage
+  const pct = (value - min) / (max - min || 1);
+  // HSL from cyan/blue (200) to red (0)
+  const hue = (1 - pct) * 200; 
+  return `hsl(${hue}, 80%, 60%)`;
+};
 
-export function formatAtomicMass(mass) {
-  if (typeof mass !== "string") return mass;
-  if (mass.startsWith("[") && mass.endsWith("]")) return mass;
 
-  const numericMass = Number.parseFloat(mass);
-  if (Number.isNaN(numericMass)) return mass;
-
-  return numericMass.toFixed(3);
-}
+export const formatNumber = (num) => {
+  if (num === null || num === undefined) return 'N/A';
+  return Number.isInteger(num) ? num : parseFloat(num).toFixed(2);
+};

@@ -1,69 +1,26 @@
-import React, { useMemo, useState } from "react";
-import { elements } from "./data/elements";
-import { useTheme } from "./contexts/ThemeContext";
-import { Header } from "./components/layout/Header";
-import { Toolbar } from "./components/layout/Toolbar";
-import { PeriodicTable } from "./components/table/PeriodicTable";
-import { Legend } from "./components/table/Legend";
-import { ElementModal } from "./components/modals/ElementModal";
-import { TimelineModal } from "./components/timeline/TimelineModal";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import ElementDetail from './pages/ElementDetail';
+import Compare from './pages/Compare';
+import Learn from './pages/Learn';
 
 function App() {
-    const { isDark } = useTheme();
-    const [isTimelineOpen, setIsTimelineOpen] = useState(false);
-    const [selectedElement, setSelectedElement] = useState(null);
-
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filterGroup, setFilterGroup] = useState("all");
-    const [filterPeriod, setFilterPeriod] = useState("all");
-
-    const categories = useMemo(() => {
-        return Array.from(new Set(elements.map((item) => item.category)));
-    }, []);
-
-    return (
-        <div
-        className={`relative min-h-screen overflow-x-hidden ${
-            isDark
-            ? "bg-[#060918] text-slate-100"
-            : "bg-gray-100 text-slate-900"
-        }`}
-        >
-
-        <div className="relative z-10 px-4 py-8 sm:px-8 sm:py-12">
-            <Header onOpenTimeline={() => setIsTimelineOpen(true)} />
-
-            <Toolbar
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              filterGroup={filterGroup}
-              onFilterGroupChange={setFilterGroup}
-              filterPeriod={filterPeriod}
-              onFilterPeriodChange={setFilterPeriod}
-            />
-
-            <Legend categories={categories} />
-
-            <PeriodicTable 
-              onElementSelect={setSelectedElement}
-              searchQuery={searchQuery}
-              filterGroup={filterGroup}
-              filterPeriod={filterPeriod}
-            />
-        </div>
-
-        {selectedElement && (
-            <ElementModal
-            element={selectedElement}
-            onClose={() => setSelectedElement(null)}
-            />
-        )}
-
-        {isTimelineOpen && (
-            <TimelineModal onClose={() => setIsTimelineOpen(false)} />
-        )}
-        </div>
-    );
+  return (
+    <Router>
+      <div className="min-h-screen text-slate-800 dark:text-slate-200">
+        <Navbar />
+        <main className="container mx-auto px-4 py-6">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/element/:symbol" element={<ElementDetail />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/learn" element={<Learn />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
 }
 
 export default App;

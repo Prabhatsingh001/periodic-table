@@ -1,37 +1,53 @@
-import React from "react";
-import { formatAtomicMass } from "../../utils/helpers";
-import { getTileClasses } from "../../utils/theme";
-import { useTheme } from "../../contexts/ThemeContext";
+import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCategoryColor } from '../../data/categoryColors';
+import { useTheme } from '../../contexts/ThemeContext';
 
-export function ElementTile({ element, onSelect, isDimmed }) {
-    const { isDark } = useTheme();
-    return (
-        <button
-            type="button"
-            className={`relative flex min-h-17 cursor-pointer flex-col items-center justify-center rounded-lg border p-1 transition-all duration-300 ease-out max-[860px]:min-h-14.5 ${
-            isDimmed 
-            ? "opacity-15 grayscale scale-[0.97] pointer-events-none z-0" 
-            : "hover:z-20 scale-100 opacity-100"
-            } ${getTileClasses(element.category, isDark)}`}
-            style={{
-                gridColumn: element.group,
-                gridRow: element.period,
-            }}
-            onClick={() => onSelect(element)}
-            aria-label={`Open details for ${element.name}`}
+const ElementTile = ({ element, isFaded, heatColor }) => {
+  const navigate = useNavigate();
+  const { isDark } = useTheme();
+
+  const categoryColor = getCategoryColor(element.category);
+  const tileColor = heatColor || categoryColor;
+
+  const bg     = isDark ? `${tileColor}1E` : '#ffffff';
+  const border = isDark ? `${tileColor}70` : `${tileColor}BB`;
+
+  return (
+    <div
+      style={{
+        gridColumnStart: element.xpos,
+        gridRowStart: element.ypos,
+        borderColor: border,
+        backgroundColor: bg,
+      }}
+      onClick={() => navigate(`/element/${element.symbol}`)}
+      className={`element-tile relative cursor-pointer select-none overflow-hidden flex flex-col items-center p-0.5 md:p-1
+        border border-solid rounded-[3px] transition-[background-color,border-color,transform,opacity] duration-200
+        ${isFaded ? 'opacity-20 grayscale' : 'opacity-100'}`}
+    >
+      {/* Atomic number */}
+      <span className="absolute top-0.5 left-1 text-[7px] md:text-[8px] font-medium z-10 leading-none text-slate-400 dark:text-slate-500">
+        {element.atomicNumber}
+      </span>
+
+      {/* Content */}
+      <div className="flex flex-col items-center justify-center flex-grow w-full mt-2.5 md:mt-3">
+        <h2
+          className="text-xs md:text-lg font-bold z-10 leading-none tracking-wide"
+          style={{ color: tileColor }}
         >
-            <span className="font-mono tabular-nums absolute left-1.5 top-1.5 text-[9px] font-medium opacity-60">
-                {element.number}
-            </span>
-            <span className={`text-[1.05rem] font-bold leading-none tracking-tight max-[860px]:text-sm ${isDark ? "text-slate-100" : "text-gray-900"}`}>
-                {element.symbol}
-            </span>
-            <span className="mt-0.5 w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-[8px] opacity-75 max-[860px]:text-[7px]">
-                {element.name}
-            </span>
-            <span className="font-mono tabular-nums mt-0.5 text-[7.5px] leading-none opacity-55 max-[860px]:text-[7px]">
-                {formatAtomicMass(element.mass)}
-            </span>
-        </button>
-    );
-}
+          {element.symbol}
+        </h2>
+        <span className="text-[5px] md:text-[7px] tracking-tight truncate w-full text-center z-10 font-normal mt-0.5 capitalize leading-none text-slate-500 dark:text-slate-400">
+          {element.name}
+        </span>
+        <span className="text-[5px] md:text-[6.5px] font-mono truncate w-full text-center z-10 leading-none mt-0.5 mb-0.5 text-slate-400 dark:text-slate-500">
+          {typeof element.atomicMass === 'number' ? element.atomicMass.toFixed(3) : element.atomicMass}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default memo(ElementTile);

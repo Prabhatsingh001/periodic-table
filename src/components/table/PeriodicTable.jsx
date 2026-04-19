@@ -1,43 +1,67 @@
-import React from "react";
-import { elements } from "../../data/elements";
-import { ElementTile } from "./ElementTile";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useMemo } from 'react';
+import { useStore } from '../../store/useStore';
+import { elements } from '../../data/elements';
+import ElementTile from './ElementTile';
+import { getHeatmapColor, getPropertyRange } from '../../utils/helpers';
+import { useTheme } from '../../contexts/ThemeContext';
 
-export function PeriodicTable({ onElementSelect, searchQuery, filterGroup, filterPeriod }) {
+export default function PeriodicTable() {
+  const { searchQuery, filters, selectedTrend } = useStore();
   const { isDark } = useTheme();
-  return (
-    <main className="mx-auto max-w-330 overflow-x-auto pb-10">
-        <div
-            className={`relative grid min-w-255 grid-cols-[repeat(18,minmax(52px,1fr))] grid-rows-[repeat(9,minmax(62px,auto))] gap-1.5 rounded-xl border p-6 max-[860px]:min-w-205 max-[860px]:grid-cols-[repeat(18,minmax(44px,1fr))] max-[860px]:grid-rows-[repeat(9,minmax(52px,auto))] max-[860px]:gap-1 max-[860px]:p-4 ${
-            isDark
-                ? "border-slate-800 bg-slate-900/50"
-                : "border-gray-200 bg-white"
-            }`}
-            role="grid"
-            aria-label="Periodic table of elements"
-        >
-            {elements.map((element) => {
-                const query = searchQuery.toLowerCase();
-                const searchMatch = !query || 
-                    element.name.toLowerCase().includes(query) || 
-                    element.symbol.toLowerCase().includes(query) || 
-                    element.number.toString().includes(query);
-                
-                const groupMatch = filterGroup === "all" || element.group.toString() === filterGroup;
-                const periodMatch = filterPeriod === "all" || element.period.toString() === filterPeriod;
-                
-                const isMatch = searchMatch && groupMatch && periodMatch;
 
-                return (
-                    <ElementTile
-                    key={element.number}
-                    element={element}
-                    onSelect={onElementSelect}
-                    isDimmed={!isMatch}
-                    />
-                );
-            })}
-        </div>
-    </main>
+  const filteredElementsSet = useMemo(() => {
+    return new Set(elements.filter(el => {
+      const matchSearch = el.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          el.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          el.atomicNumber.toString() === searchQuery;
+                          
+      const matchCategory = filters.category.length === 0 || 
+                            filters.category.some(c => el.category.toLowerCase().includes(c));                            
+      
+      const matchPhase = filters.phase.length === 0 || 
+                         filters.phase.some(p => el.phase === p);
+                         
+      const matchGroup = filters.group.length === 0 ||
+                         filters.group.includes(Number(el.group));
+                         
+      const matchPeriod = filters.period.length === 0 ||
+                          filters.period.includes(Number(el.period));
+      
+      return matchSearch && matchCategory && matchPhase && matchGroup && matchPeriod;
+    }).map(e => e.symbol));
+  }, [searchQuery, filters]);
+
+  const trendRange = useMemo(() => {
+    if (!selectedTrend) return null;
+    return getPropertyRange(elements, selectedTrend);
+  }, [selectedTrend]);
+
+  return (
+    <div
+      style={{ backgroundColor: isDark ? '#0c1222' : '#ffffff' }}
+      className="p-3 md:p-6 rounded-2xl overflow-x-auto border border-slate-200 dark:border-white/5 transition-colors duration-300"
+    >
+      <div 
+        className="grid gap-[3px] md:gap-1.5 min-w-[1000px] grid-cols-[repeat(18,minmax(0,1fr))] grid-rows-[repeat(10,minmax(0,1fr))]"
+      >
+        {elements.map((el) => {
+          const isFaded = !filteredElementsSet.has(el.symbol);
+          let heatColor = null;
+          if (selectedTrend && trendRange) {
+            const val = el[selectedTrend];
+            heatColor = getHeatmapColor(val, trendRange.min, trendRange.max);
+          }
+          
+          return (
+            <ElementTile 
+              key={el.symbol} 
+              element={el} 
+              isFaded={isFaded}
+              heatColor={heatColor}
+            />
+          );
+        })}
+      </div>
+    </div>
   );
 }

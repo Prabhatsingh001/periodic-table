@@ -1,16 +1,121 @@
-# React + Vite
+# Periodic Table
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive periodic table application built with React, featuring all 118 elements with detailed information, dark/light mode support, and a discovery history timeline.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Interactive Element Display**: Browse all 118 elements in a grid layout with color-coded categories
+- **Element Details Modal**: Click any element to view comprehensive information including:
+  - Atomic number, symbol, and name
+  - Atomic mass (normalized to 3 decimal places)
+  - Category and phase
+  - Group and period information
+- **Dark/Light Mode Toggle**: Switch between dark and light themes with persistent user preference stored in localStorage
+- **Discovery Timeline**: Explore the history of element discovery with an interactive timeline showing:
+  - Year of discovery
+  - Geographic location
+  - Elements discovered in that period
+  - Comic-style card layout with dotted timeline visualization
+- **Tailwind CSS Styling**: Modern utility-first CSS framework for responsive and maintainable styling
+- **Responsive Design**: Optimized for desktop viewing with smooth hover effects and transitions
 
-## React Compiler
+## Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18**: Modern UI framework with hooks
+- **Vite**: Lightning-fast build tool and development server
+- **Tailwind CSS**: Utility-first CSS framework
+- **JavaScript ES6+**: Modern JavaScript features
+- **localStorage API**: Persistent theme preference storage
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+## Running the Application
+
+### Development Server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```text
+src/
+├── App.jsx                 # Main application component with all UI elements
+├── main.jsx               # React entry point
+├── index.css              # Global styles (Tailwind import)
+├── data/
+│   ├── elements.js        # 118 element database with properties
+│   └── discoveryTimeline.js # 21 timeline entries for element discovery history
+public/
+├── index.html             # HTML template
+```
+
+## Key Components
+
+### App Component (src/App.jsx)
+
+The main component handles:
+
+- Theme state management (dark/light mode)
+- Element selection and modal display
+- Timeline modal rendering
+- All sub-components and UI rendering
+
+### Data Files
+
+- **elements.js**: Contains all 118 elements with properties: atomic number, mass, symbol, name, category, group, period, and phase
+- **discoveryTimeline.js**: Chronological timeline entries from ancient times through 2016 with element discoveries and locations
+
+## Usage
+
+### Viewing Element Details
+
+Click on any element tile to open a modal displaying complete information about that element.
+
+### Switching Theme
+
+Use the theme toggle button in the top-right corner to switch between dark and light modes. Your preference is saved automatically.
+
+### Exploring Discovery History
+
+Click the "Discovery Timeline" button to view an interactive timeline of how elements were discovered throughout history.
+
+## Element Categories
+
+Elements are color-coded by category:
+
+- Alkali metals
+- Alkaline earth metals
+- Transition metals
+- Lanthanides
+- Actinides
+- Nonmetals
+- Halogens
+- Noble gases
+- And more...
+
+## Browser Support
+
+Works best in modern browsers (Chrome, Firefox, Safari, Edge) that support ES6+ JavaScript and CSS Grid/Flexbox.
