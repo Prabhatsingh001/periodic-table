@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere, Trail } from '@react-three/drei';
 import * as THREE from 'three';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Electron = ({ radius, speed, angleOffset, color }) => {
   const ref = useRef();
@@ -65,10 +66,13 @@ const AtomSystem = ({ atomicNumber, color }) => {
 };
 
 const Atom3D = ({ atomicNumber, color = "#48dbfb" }) => {
+  const { isDark } = useTheme();
+  const canvasBg = isDark ? '#0f172a' : '#e2e8f0';
+
   return (
     <div className="w-full h-[300px] md:h-[400px] cursor-grab active:cursor-grabbing rounded-2xl overflow-hidden glass">
       <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
-        <color attach="background" args={['#0f172a']} />
+        <color attach="background" args={[canvasBg]} />
         <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
         <AtomSystem atomicNumber={atomicNumber} color={color} />
       </Canvas>

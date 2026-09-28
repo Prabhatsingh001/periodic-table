@@ -1,6 +1,14 @@
 import { useStore } from '../store/useStore';
 import { elements } from '../data/elements';
+import { useTheme } from '../contexts/ThemeContext';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+const TREND_OPTIONS = [
+  { value: 'atomicRadius', label: 'Atomic Radius' },
+  { value: 'electronegativity', label: 'Electronegativity' },
+  { value: 'ionizationEnergy', label: 'Ionization Energy' },
+  { value: 'atomicMass', label: 'Atomic Mass' }
+];
 
 const CustomTooltip = ({ active, payload, label, trend }) => {
   if (active && payload && payload.length) {
@@ -18,13 +26,9 @@ const CustomTooltip = ({ active, payload, label, trend }) => {
 
 const TrendVisualizer = () => {
   const { selectedTrend, setSelectedTrend } = useStore();
+  const { isDark } = useTheme();
 
-  const options = [
-    { value: 'atomicRadius', label: 'Atomic Radius' },
-    { value: 'electronegativity', label: 'Electronegativity' },
-    { value: 'ionizationEnergy', label: 'Ionization Energy' },
-    { value: 'atomicMass', label: 'Atomic Mass' }
-  ];
+  const axisColor = isDark ? '#64748b' : '#94a3b8';
 
   const data = elements
     .filter(e => e[selectedTrend] !== null && e[selectedTrend] !== undefined)
@@ -37,7 +41,7 @@ const TrendVisualizer = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-4">
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-white">
             <span className="bg-blue-500 w-2 h-6 rounded-full inline-block"></span>
@@ -51,7 +55,7 @@ const TrendVisualizer = () => {
           onChange={(e) => setSelectedTrend(e.target.value)}
           className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none font-medium"
         >
-          {options.map(opt => (
+          {TREND_OPTIONS.map(opt => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
           ))}
         </select>
@@ -60,8 +64,8 @@ const TrendVisualizer = () => {
       <div className="h-[300px] w-full mt-4">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <XAxis dataKey="atomicNumber" stroke="#888" tick={{fill: '#888', fontSize: 12}} />
-            <YAxis stroke="#888" tick={{fill: '#888', fontSize: 12}} />
+            <XAxis dataKey="atomicNumber" stroke={axisColor} tick={{fill: axisColor, fontSize: 12}} />
+            <YAxis stroke={axisColor} tick={{fill: axisColor, fontSize: 12}} />
             <Tooltip content={<CustomTooltip trend={selectedTrend} />} />
             <Line 
               type="monotone" 

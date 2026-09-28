@@ -3,11 +3,11 @@ import { useStore } from '../../store/useStore';
 import { elements } from '../../data/elements';
 import ElementTile from './ElementTile';
 import { getHeatmapColor, getPropertyRange } from '../../utils/helpers';
-import { useTheme } from '../../contexts/ThemeContext';
+
 
 export default function PeriodicTable() {
   const { searchQuery, filters, selectedTrend } = useStore();
-  const { isDark } = useTheme();
+
 
   const filteredElementsSet = useMemo(() => {
     return new Set(elements.filter(el => {
@@ -38,8 +38,7 @@ export default function PeriodicTable() {
 
   return (
     <div
-      style={{ backgroundColor: isDark ? '#0c1222' : '#ffffff' }}
-      className="p-3 md:p-6 rounded-2xl overflow-x-auto border border-slate-200 dark:border-white/5 transition-colors duration-300"
+      className="p-3 md:p-6 rounded-2xl overflow-x-auto border border-slate-200 dark:border-white/5 bg-white dark:bg-[#0c1222] transition-colors duration-300"
     >
       <div 
         className="grid gap-[3px] md:gap-1.5 min-w-[1000px] grid-cols-[repeat(18,minmax(0,1fr))] grid-rows-[repeat(10,minmax(0,1fr))]"

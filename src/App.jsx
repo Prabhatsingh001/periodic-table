@@ -8,7 +8,7 @@ import Learn from './pages/Learn';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen text-slate-800 dark:text-slate-200">
+      <div className="min-h-screen text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-950 transition-colors duration-300">
         <Navbar />
         <main className="container mx-auto px-4 py-6">
           <Routes>
