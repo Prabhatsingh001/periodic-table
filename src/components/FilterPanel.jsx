@@ -16,12 +16,19 @@ export const FilterDropdowns = () => {
     setFilters({ period: val === "all" ? [] : [Number(val)] });
   };
 
+  const selectStyle = {
+    backgroundColor: 'var(--input-bg)',
+    borderColor: 'var(--input-border)',
+    color: 'var(--text-primary)',
+  };
+
   return (
     <div className="flex items-center gap-2">
       <select 
         value={filters.group.length > 0 ? filters.group[0] : "all"}
         onChange={handleGroupChange}
-        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2 outline-none font-medium shadow-sm"
+        className="border text-xs sm:text-sm rounded-lg p-1.5 sm:p-2 outline-none font-medium shadow-sm"
+        style={selectStyle}
       >
         <option value="all">All Groups</option>
         {Array.from({length: 18}, (_, i) => i + 1).map(g => (
@@ -32,7 +39,8 @@ export const FilterDropdowns = () => {
       <select 
         value={filters.period.length > 0 ? filters.period[0] : "all"}
         onChange={handlePeriodChange}
-        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2 outline-none font-medium shadow-sm"
+        className="border text-xs sm:text-sm rounded-lg p-1.5 sm:p-2 outline-none font-medium shadow-sm"
+        style={selectStyle}
       >
         <option value="all">All Periods</option>
         {Array.from({length: 7}, (_, i) => i + 1).map(p => (
@@ -63,14 +71,13 @@ export const CategoryLegend = () => {
         let bgColor, borderColor, textColor;
 
         if (isDark) {
-          bgColor      = isSelected ? `${cat.color}33` : `${cat.color}12`;
-          borderColor  = isSelected ? `${cat.color}90` : `${cat.color}40`;
-          textColor    = isSelected ? '#ffffff' : '#94a3b8';
+          bgColor      = isSelected ? `${cat.color}30` : `${cat.color}0A`;
+          borderColor  = isSelected ? `${cat.color}70` : `${cat.color}25`;
+          textColor    = isSelected ? '#e8dcc8' : '#7a6b58';
         } else {
-          // Light mode: white card with colored accent when unselected; solid color when selected
-          bgColor      = isSelected ? cat.color : '#ffffff';
-          borderColor  = cat.color;
-          textColor    = isSelected ? '#ffffff' : cat.color;
+          bgColor      = isSelected ? `${cat.color}20` : '#fefcf7';
+          borderColor  = isSelected ? `${cat.color}60` : `${cat.color}30`;
+          textColor    = isSelected ? cat.color : `${cat.color}cc`;
         }
 
         return (
@@ -78,11 +85,11 @@ export const CategoryLegend = () => {
             key={cat.id}
             onClick={() => toggleCategory(cat.id)}
             style={{ backgroundColor: bgColor, borderColor, color: textColor }}
-            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[11px] font-semibold capitalize transition-all duration-200 border shadow-sm hover:scale-105 active:scale-95"
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-sm text-[9px] sm:text-[11px] font-semibold capitalize transition-all duration-200 border hover:-translate-y-[1px] active:translate-y-0"
           >
             <span 
               className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full flex-shrink-0"
-              style={{ backgroundColor: isSelected && !isDark ? '#ffffff99' : cat.color }}
+              style={{ backgroundColor: cat.color }}
             />
             {cat.label}
           </button>

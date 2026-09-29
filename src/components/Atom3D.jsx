@@ -65,9 +65,9 @@ const AtomSystem = ({ atomicNumber, color }) => {
   );
 };
 
-const Atom3D = ({ atomicNumber, color = "#48dbfb" }) => {
+const Atom3D = ({ atomicNumber, color = "#b87333" }) => {
   const { isDark } = useTheme();
-  const canvasBg = isDark ? '#0f172a' : '#e2e8f0';
+  const canvasBg = isDark ? '#100c06' : '#f0e8d8';
 
   return (
     <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-[500px] cursor-grab active:cursor-grabbing rounded-xl sm:rounded-2xl overflow-hidden glass">

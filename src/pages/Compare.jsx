@@ -16,28 +16,39 @@ const Compare = () => {
   return (
     <div className="max-w-6xl 2xl:max-w-7xl mx-auto flex flex-col gap-4 sm:gap-6 lg:gap-8">
       <div>
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-black mb-1 sm:mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 uppercase tracking-widest">
+        <div className="flex items-center gap-2 mb-1 sm:mb-2">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold uppercase tracking-[0.15em] font-['Playfair_Display',serif]"
+            style={{ color: 'var(--accent)' }}
+          >
             Element Comparison
-        </h1>
-        <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400">Select up to 3 elements to view side-by-side data.</p>
+          </h1>
+          <span className="text-[10px] font-['JetBrains_Mono',monospace] tracking-widest px-2 py-0.5 rounded border hidden sm:inline-block"
+            style={{ borderColor: 'var(--divider)', color: 'var(--text-muted)', backgroundColor: 'var(--hover-bg)' }}
+          >
+            Δ ANALYSIS
+          </span>
+        </div>
+        <p className="text-sm sm:text-base" style={{ color: 'var(--text-muted)' }}>Select up to 3 elements to view side-by-side comparative data.</p>
       </div>
 
-      <div className="glass p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border-t-4 border-t-blue-500">
+      <div className="glass p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl border-t-2" style={{ borderTopColor: 'var(--accent)' }}>
         <div className="relative mb-4 sm:mb-6">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-400" />
+                <Search className="h-5 w-5" style={{ color: 'var(--text-muted)' }} />
             </div>
             <input
                 type="text"
                 placeholder="Search element to compare..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2.5 sm:py-3 rounded-xl border
-                  bg-white dark:bg-slate-900/50
-                  border-slate-300 dark:border-white/10
-                  text-slate-800 dark:text-slate-200
-                  placeholder-slate-400 dark:placeholder-slate-500
-                  focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium text-sm sm:text-base"
+                className="block w-full pl-10 pr-3 py-2.5 sm:py-3 rounded-lg border
+                  focus:outline-none focus:ring-2 transition-all font-medium text-sm sm:text-base"
+                style={{
+                  backgroundColor: 'var(--input-bg)',
+                  borderColor: 'var(--input-border)',
+                  color: 'var(--text-primary)',
+                  '--tw-ring-color': 'var(--accent-glow)',
+                }}
             />
         </div>
 
@@ -49,11 +60,17 @@ const Compare = () => {
                         <button
                             key={el.symbol}
                             onClick={() => toggleSelectedElement(el)}
-                            className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold border transition-all ${
-                                isSelected 
-                                ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_10px_rgba(37,99,235,0.5)]' 
-                                : 'bg-slate-100 dark:bg-white/5 border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10'
-                            }`}
+                            className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold border transition-all"
+                            style={isSelected ? {
+                              backgroundColor: 'var(--accent)',
+                              borderColor: 'var(--accent)',
+                              color: '#fff',
+                              boxShadow: '0 0 10px var(--accent-glow)',
+                            } : {
+                              backgroundColor: 'var(--hover-bg)',
+                              borderColor: 'var(--divider)',
+                              color: 'var(--text-secondary)',
+                            }}
                         >
                             <span className="hidden sm:inline">{el.name} ({el.symbol})</span>
                             <span className="sm:hidden">{el.symbol}</span>
