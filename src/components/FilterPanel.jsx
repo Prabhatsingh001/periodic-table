@@ -21,7 +21,7 @@ export const FilterDropdowns = () => {
       <select 
         value={filters.group.length > 0 ? filters.group[0] : "all"}
         onChange={handleGroupChange}
-        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none font-medium shadow-sm"
+        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2 outline-none font-medium shadow-sm"
       >
         <option value="all">All Groups</option>
         {Array.from({length: 18}, (_, i) => i + 1).map(g => (
@@ -32,7 +32,7 @@ export const FilterDropdowns = () => {
       <select 
         value={filters.period.length > 0 ? filters.period[0] : "all"}
         onChange={handlePeriodChange}
-        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none font-medium shadow-sm"
+        className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-slate-200 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2 outline-none font-medium shadow-sm"
       >
         <option value="all">All Periods</option>
         {Array.from({length: 7}, (_, i) => i + 1).map(p => (
@@ -56,7 +56,7 @@ export const CategoryLegend = () => {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
+    <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
       {legendCategories.map(cat => {
         const isSelected = filters.category.includes(cat.id);
 
@@ -78,10 +78,10 @@ export const CategoryLegend = () => {
             key={cat.id}
             onClick={() => toggleCategory(cat.id)}
             style={{ backgroundColor: bgColor, borderColor, color: textColor }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold capitalize transition-all duration-200 border shadow-sm hover:scale-105 active:scale-95"
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[11px] font-semibold capitalize transition-all duration-200 border shadow-sm hover:scale-105 active:scale-95"
           >
             <span 
-              className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+              className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full flex-shrink-0"
               style={{ backgroundColor: isSelected && !isDark ? '#ffffff99' : cat.color }}
             />
             {cat.label}

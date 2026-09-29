@@ -70,7 +70,7 @@ const Atom3D = ({ atomicNumber, color = "#48dbfb" }) => {
   const canvasBg = isDark ? '#0f172a' : '#e2e8f0';
 
   return (
-    <div className="w-full h-[300px] md:h-[400px] cursor-grab active:cursor-grabbing rounded-2xl overflow-hidden glass">
+    <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-[500px] cursor-grab active:cursor-grabbing rounded-xl sm:rounded-2xl overflow-hidden glass">
       <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
         <color attach="background" args={[canvasBg]} />
         <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
